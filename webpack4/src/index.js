@@ -8,7 +8,7 @@ import { cube } from "./shaking.js"
 if (process.env.NODE_ENV !== 'production') {
 	console.log('Looks like we are in development mode!',process.env.NODE_ENV)
 }
-// 以下是静态载入，需要splitChunks抽离
+// 以下是静态载入lodash，需要splitChunks抽离
 // function component() {
 // 	const element = document.createElement("div")
 // 	element.innerHTML = _.join(['my','name','is','yvonne',cube(5)], ' ')
@@ -71,7 +71,10 @@ async function getComponent() {
 
 	const button = document.createElement("button")
 	button.innerHTML = "click me!"
-	button.onclick = printMe
+	button.onclick = e => import(/* webpackChunkName: "print" */ './print').then(module => {
+		var print = module.default
+		print()
+	})
 	element.appendChild(button)
 
 	console.log(data)
