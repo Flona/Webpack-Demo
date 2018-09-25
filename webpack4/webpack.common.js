@@ -9,8 +9,8 @@ module.exports = {
 		// print: "./src/print.js"
 	},
 	output: {
-		filename: '[name].bundle.js',
-		chunkFilename: '[name].bundle.js',
+		filename: '[name].[chunkhash].js',
+		// chunkFilename: '[name].bundle.js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	module: {
@@ -33,11 +33,18 @@ module.exports = {
 			}
 		]
 	},
-	// optimization: {
-	// 	splitChunks: {
-	// 		chunks: "all"
-	// 	}
-	// },
+	optimization: {
+		runtimeChunk: "single",
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/]/,
+					name: "vendors",
+					chunks: "all"
+				}
+			}
+		}
+	},
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
